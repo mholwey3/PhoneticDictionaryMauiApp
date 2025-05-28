@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PhoneticDictionaryMauiApp.MainPage">
+
+    <StackLayout>
+        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
+            <Label Text="Phonetic Dictionary" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
+        </Frame>
+        <Entry x:Name="UserInput" Completed="TryGetWord" ReturnType="Search" Placeholder="Search for a word" FontSize="24"/>
+        <Label x:Name="Word" Text="" HorizontalTextAlignment="Start" FontSize="32" Padding="16" FontAttributes="Bold" />
+        <Label x:Name="Pronunciation" Text="" HorizontalTextAlignment="Start" FontSize="20" Padding="16,0,0,0" />
+        <Label x:Name="PhoneticSpelling" Text="" HorizontalTextAlignment="Start" FontSize="20" Padding="16,0,0,0" />
+        <ScrollView>
+            <StackLayout>
+                <StackLayout x:Name="RelatedItemsParent"></StackLayout>
+                <StackLayout x:Name="UseCasesParent"></StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+
+</ContentPage>
