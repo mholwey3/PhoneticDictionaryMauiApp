@@ -4,19 +4,22 @@
              x:Class="PhoneticDictionaryMauiApp.MainPage">
 
     <StackLayout>
-        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
+        <Frame BackgroundColor="#2196F3" CornerRadius="0">
             <Label Text="Phonetic Dictionary" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
         </Frame>
-        <Entry x:Name="UserInput" Completed="TryGetWord" ReturnType="Search" Placeholder="Search for a word" FontSize="24"/>
-        <Label x:Name="Word" Text="" HorizontalTextAlignment="Start" FontSize="32" Padding="16" FontAttributes="Bold" />
-        <Label x:Name="Pronunciation" Text="" HorizontalTextAlignment="Start" FontSize="20" Padding="16,0,0,0" />
-        <Label x:Name="PhoneticSpelling" Text="" HorizontalTextAlignment="Start" FontSize="20" Padding="16,0,0,0" />
-        <ScrollView>
+        <StackLayout>
+            <Entry x:Name="UserInput" Completed="TryGetWord" ReturnType="Search" Placeholder="Search for a word" FontSize="24"/>
+        </StackLayout>
+        <ScrollView VerticalOptions="FillAndExpand">
             <StackLayout>
-                <StackLayout x:Name="RelatedItemsParent"></StackLayout>
-                <StackLayout x:Name="UseCasesParent"></StackLayout>
+                <Label x:Name="Word" Text="" HorizontalTextAlignment="Start" FontSize="32" Padding="16" FontAttributes="Bold" />
+                <Label x:Name="Pronunciation" Text="" HorizontalTextAlignment="Start" FontSize="20" Padding="16,0,0,0" />
+                <Label x:Name="PhoneticSpelling" Text="" HorizontalTextAlignment="Start" FontSize="20" Padding="16,0,0,0" />
+                <StackLayout>
+                    <StackLayout x:Name="RelatedItemsParent"></StackLayout>
+                    <StackLayout x:Name="ExamplesParent"></StackLayout>
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </StackLayout>
-
 </ContentPage>

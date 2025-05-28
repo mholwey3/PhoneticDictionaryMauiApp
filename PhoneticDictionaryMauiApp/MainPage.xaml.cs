@@ -10,7 +10,7 @@ namespace PhoneticDictionaryMauiApp
         private IPhoneticDictionary _dictionary;
 
         private AdditionalInfoView _relatedItemsView;
-        private AdditionalInfoView _useCasesView;
+        private AdditionalInfoView _examplesView;
 
         public MainPage()
         {
@@ -18,7 +18,7 @@ namespace PhoneticDictionaryMauiApp
 
             _dictionary = new PhoneticDictionaryFile();
             _relatedItemsView = new AdditionalInfoView("Related Items");
-            _useCasesView = new AdditionalInfoView("Use Cases");
+            _examplesView = new AdditionalInfoView("Examples");
         }
 
         private void TryGetWord(object sender, EventArgs args)
@@ -26,7 +26,7 @@ namespace PhoneticDictionaryMauiApp
             string text = UserInput.Text;
             UserInput.Text = "";
 
-            DictionaryItem item = _dictionary.GetDictionaryItem(text);
+            DictionaryItem? item = _dictionary.GetDictionaryItem(text);
 
             if (item != null)
             {
@@ -51,7 +51,7 @@ namespace PhoneticDictionaryMauiApp
             PhoneticSpelling.Text = item.PhoneticSpelling;
 
             ClearRelatedItemsDataOnView();
-            ClearUseCaseItemsDataOnView();
+            ClearExampleItemsDataOnView();
 
             if (item.RelatedItems.Count > 0)
             {
@@ -60,7 +60,7 @@ namespace PhoneticDictionaryMauiApp
 
             if (item.UseCases.Count > 0)
             {
-                SetUseCaseItemsDataOnView(item);
+                SetExampleItemsDataOnView(item);
             }
         }
 
@@ -76,16 +76,16 @@ namespace PhoneticDictionaryMauiApp
             RelatedItemsParent.Children.Clear();
         }
 
-        private void SetUseCaseItemsDataOnView(DictionaryItem item)
+        private void SetExampleItemsDataOnView(DictionaryItem item)
         {
-            _useCasesView.SetDataOnView(item.UseCases);
-            UseCasesParent.Children.Add(_useCasesView);
+            _examplesView.SetDataOnView(item.UseCases);
+            ExamplesParent.Children.Add(_examplesView);
         }
 
-        private void ClearUseCaseItemsDataOnView()
+        private void ClearExampleItemsDataOnView()
         {
-            _useCasesView.ClearDataOnView();
-            UseCasesParent.Children.Clear();
+            _examplesView.ClearDataOnView();
+            ExamplesParent.Children.Clear();
         }
     }
 
