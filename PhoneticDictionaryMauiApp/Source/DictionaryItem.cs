@@ -1,29 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SQLite;
 
-namespace PhoneticDictionaryApp.Source
+namespace PhoneticDictionaryMauiApp.Source
 {
-	public class DictionaryItem
-	{
-        public string Word { get; private set; }
+    [Table("dictionaryItem")]
+    public class DictionaryItem
+    {
+        [Column("word_id")]
+        public string WordId { get; private set; }
+
+        [Column("word_display")]
+        public string WordDisplay { get; private set; }
+
+        [Column("pronunciation")]
         public string Pronunciation { get; private set; }
+
+        [Column("phonetic_spelling")]
         public string PhoneticSpelling { get; private set; }
 
-        public List<DictionaryItem> RelatedItems { get; private set; }
-        public List<DictionaryItem> UseCases { get; private set; }
+        [Column("item_type")]
+        public ItemType Type { get; private set; }
 
-        public DictionaryItem(string sWord, string sDictionaryPronunciation, string sPhoneticSpelling, bool bIsMainItem)
+        public enum ItemType
         {
-            Word = sWord;
-            Pronunciation = sDictionaryPronunciation;
-            PhoneticSpelling = sPhoneticSpelling;
+            Main,
+            RelatedItem,
+            Example
+        }
 
-            if (bIsMainItem)
-            {
-                RelatedItems = new List<DictionaryItem>();
-                UseCases = new List<DictionaryItem>();
-            }
+        public DictionaryItem()
+        {
+            
         }
     }
 }

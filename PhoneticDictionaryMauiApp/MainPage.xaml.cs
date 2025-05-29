@@ -1,36 +1,35 @@
-﻿using PhoneticDictionaryApp.Source;
+﻿using PhoneticDictionaryMauiApp.Source;
 using PhoneticDictionaryMauiApp.Views;
+using static PhoneticDictionaryMauiApp.Source.DictionaryItem;
 
 namespace PhoneticDictionaryMauiApp
 {
     public partial class MainPage : ContentPage
     {
-        private const string _FILE_NAME = "PHONETIC_DICTIONARY_BASE_A.csv";
+        private readonly PhoneticDictionaryDatabase _database;
 
-        private IPhoneticDictionary _dictionary;
+        private readonly AdditionalInfoView _relatedItemsView;
+        private readonly AdditionalInfoView _examplesView;
 
-        private AdditionalInfoView _relatedItemsView;
-        private AdditionalInfoView _examplesView;
-
-        public MainPage()
+        public MainPage(PhoneticDictionaryDatabase database)
         {
             InitializeComponent();
 
-            _dictionary = new PhoneticDictionaryFile();
+            _database = database;
             _relatedItemsView = new AdditionalInfoView("Related Items");
             _examplesView = new AdditionalInfoView("Examples");
         }
 
         private void TryGetWord(object sender, EventArgs args)
         {
-            string text = UserInput.Text;
+            string text = UserInput.Text.Trim().ToLower();
             UserInput.Text = "";
 
-            DictionaryItem? item = _dictionary.GetDictionaryItem(text);
+            List<DictionaryItem> items = _database.GetItems(text);
 
-            if (item != null)
+            if (items.Count > 0)
             {
-                SetDataOnView(item);
+                SetDataOnView(items);
             }
             else
             {
@@ -40,33 +39,38 @@ namespace PhoneticDictionaryMauiApp
 
         private void HandleItemNotFound(string text)
         {
-            DictionaryItem item = new DictionaryItem(text, "No result found.", "", true);
-            SetDataOnView(item);
+            Word.Text = text;
+            Pronunciation.Text = "Item not found.";
+            PhoneticSpelling.Text = string.Empty;
         }
 
-        private void SetDataOnView(DictionaryItem item)
+        private void SetDataOnView(List<DictionaryItem> items)
         {
-            Word.Text = item.Word;
-            Pronunciation.Text = item.Pronunciation;
-            PhoneticSpelling.Text = item.PhoneticSpelling;
+            DictionaryItem mainItem = items.Find(i => i.Type == ItemType.Main);
+            List<DictionaryItem> relatedItems = items.FindAll(i => i.Type == ItemType.RelatedItem);
+            List<DictionaryItem> examples = items.FindAll(i => i.Type == ItemType.Example);
+
+            Word.Text = mainItem.WordDisplay;
+            Pronunciation.Text = mainItem.Pronunciation;
+            PhoneticSpelling.Text = mainItem.PhoneticSpelling;
 
             ClearRelatedItemsDataOnView();
             ClearExampleItemsDataOnView();
 
-            if (item.RelatedItems.Count > 0)
+            if (relatedItems.Count > 0)
             {
-                SetRelatedItemsDataOnView(item);
+                SetRelatedItemsDataOnView(relatedItems);
             }
 
-            if (item.UseCases.Count > 0)
+            if (examples.Count > 0)
             {
-                SetExampleItemsDataOnView(item);
+                SetExampleItemsDataOnView(examples);
             }
         }
 
-        private void SetRelatedItemsDataOnView(DictionaryItem item)
+        private void SetRelatedItemsDataOnView(List<DictionaryItem> items)
         {
-            _relatedItemsView.SetDataOnView(item.RelatedItems);
+            _relatedItemsView.SetDataOnView(items);
             RelatedItemsParent.Children.Add(_relatedItemsView);
         }
 
@@ -76,9 +80,9 @@ namespace PhoneticDictionaryMauiApp
             RelatedItemsParent.Children.Clear();
         }
 
-        private void SetExampleItemsDataOnView(DictionaryItem item)
+        private void SetExampleItemsDataOnView(List<DictionaryItem> items)
         {
-            _examplesView.SetDataOnView(item.UseCases);
+            _examplesView.SetDataOnView(items);
             ExamplesParent.Children.Add(_examplesView);
         }
 

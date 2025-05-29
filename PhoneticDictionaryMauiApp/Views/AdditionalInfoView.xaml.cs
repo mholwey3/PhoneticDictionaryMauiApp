@@ -1,5 +1,5 @@
 
-using PhoneticDictionaryApp.Source;
+using PhoneticDictionaryMauiApp.Source;
 
 namespace PhoneticDictionaryMauiApp.Views;
 

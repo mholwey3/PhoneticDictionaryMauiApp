@@ -1,8 +1,8 @@
-﻿namespace PhoneticDictionaryApp.Source
+﻿namespace PhoneticDictionaryMauiApp.Source
 {
-    class PhoneticDictionaryFile : IPhoneticDictionary
+    class PhoneticDictionaryFile
     {
-        private const string FILE_NAME = "PHONETIC_DICTIONARY_BASE_A.txt";
+        private const string FILE_NAME = "TEST_DOC.txt";
 
         public Dictionary<string, DictionaryItem> PhoneticDictionary { get; set; }
 
@@ -10,63 +10,63 @@
         {
             PhoneticDictionary = new Dictionary<string, DictionaryItem>();
 
-            LoadDictionary();
+            //LoadDictionary();
         }
 
-        protected async void LoadDictionary()
-        {
-            PhoneticDictionary = await ReadDictionaryData();
-        }
+        //protected async void LoadDictionary()
+        //{
+        //    PhoneticDictionary = await ReadDictionaryData();
+        //}
 
-        private async Task<Dictionary<string, DictionaryItem>> ReadDictionaryData()
-        {
-            using Stream stream = await FileSystem.Current.OpenAppPackageFileAsync(FILE_NAME);
-            using StreamReader reader = new StreamReader(stream);
-            DictionaryItem? item = null;
-            string? sLine;
-            string[] sLineComponents;
-            int iParenLocation_Curr;
-            string sMainWord_Curr;
-            Dictionary<string, DictionaryItem> dictionary = new Dictionary<string, DictionaryItem>();
+        //private async Task<Dictionary<string, DictionaryItem>> ReadDictionaryData()
+        //{
+        //    using Stream stream = await FileSystem.Current.OpenAppPackageFileAsync(FILE_NAME);
+        //    using StreamReader reader = new StreamReader(stream);
+        //    DictionaryItem? item = null;
+        //    string? line;
+        //    string[] lineComponents;
+        //    int curParenthesesIndex;
+        //    string curWord;
+        //    Dictionary<string, DictionaryItem> dictionary = new Dictionary<string, DictionaryItem>();
 
-            while ((sLine = reader.ReadLine()) != null)
-            {
-                sLineComponents = sLine.Split(',');
+        //    while ((line = reader.ReadLine()) != null)
+        //    {
+        //        lineComponents = line.Split(',');
 
-                for (int i = 0; i < sLineComponents.Length; i++)
-                {
-                    sLineComponents[i] = sLineComponents[i].Trim().ToLower();
-                }
+        //        for (int i = 0; i < lineComponents.Length; i++)
+        //        {
+        //            lineComponents[i] = lineComponents[i].Trim().ToLower();
+        //        }
 
-                iParenLocation_Curr = sLineComponents[0].IndexOf('(');
-                sMainWord_Curr = iParenLocation_Curr > 0 ? sLineComponents[0].Substring(0, iParenLocation_Curr).Trim() : sLineComponents[0];
+        //        curParenthesesIndex = lineComponents[0].IndexOf('(');
+        //        curWord = curParenthesesIndex > 0 ? lineComponents[0].Substring(0, curParenthesesIndex).Trim() : lineComponents[0].Trim();
 
-                if (sLine.Contains("/")) // Use Case Item
-                {
-                    if (item != null)
-                    {
-                        sLineComponents[0] = sLineComponents[0].Replace("/", item.Word);
-                        sLineComponents[1] = sLineComponents[1].Replace("/", item.Pronunciation);
-                        sLineComponents[2] = sLineComponents[2].Replace("/", item.PhoneticSpelling);
-                        item.UseCases.Add(new DictionaryItem(sLineComponents[0], sLineComponents[1], sLineComponents[2], false));
-                    }
-                }
-                else if (!dictionary.ContainsKey(sMainWord_Curr)) // New Dictionary Item
-                {
-                    item = new DictionaryItem(sLineComponents[0], sLineComponents[1], sLineComponents[2], true);
-                    dictionary.Add(sMainWord_Curr, item);
-                }
-                else // Related Item
-                {
-                    if (item != null)
-                    {
-                        item.RelatedItems.Add(new DictionaryItem(sLineComponents[0], sLineComponents[1], sLineComponents[2], false));
-                    }
-                }
-            }
+        //        if (lineComponents[0].Contains("/")) // Example Item
+        //        {
+        //            if (item != null)
+        //            {
+        //                lineComponents[0] = lineComponents[0].Replace("/", item.Word);
+        //                lineComponents[1] = lineComponents[1].Replace("/", item.Pronunciation);
+        //                lineComponents[2] = lineComponents[2].Replace("/", item.PhoneticSpelling);
+        //                item.Examples?.Add(new DictionaryItem(lineComponents[0], lineComponents[1], lineComponents[2], false));
+        //            }
+        //        }
+        //        else if (!dictionary.ContainsKey(curWord)) // New Dictionary Item
+        //        {
+        //            item = new DictionaryItem(lineComponents[0], lineComponents[1], lineComponents[2], true);
+        //            dictionary.Add(curWord, item);
+        //        }
+        //        else // Related Item
+        //        {
+        //            if (item != null)
+        //            {
+        //                item.RelatedItems?.Add(new DictionaryItem(lineComponents[0], lineComponents[1], lineComponents[2], false));
+        //            }
+        //        }
+        //    }
 
-            return dictionary;
-        }
+        //    return dictionary;
+        //}
 
         public DictionaryItem? GetDictionaryItem(string word)
         {
