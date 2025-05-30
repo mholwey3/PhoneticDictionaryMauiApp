@@ -1,4 +1,6 @@
-﻿namespace PhoneticDictionaryMauiApp
+﻿using PhoneticDictionaryMauiApp.Source;
+
+namespace PhoneticDictionaryMauiApp
 {
     public partial class App : Application
     {

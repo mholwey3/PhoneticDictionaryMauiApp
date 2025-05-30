@@ -12,7 +12,7 @@ namespace PhoneticDictionaryMauiApp.Source
             }
         }
 
-        private readonly SQLiteConnection _connection;
+        private SQLiteConnection _connection;
 
         public PhoneticDictionaryDatabase()
         {
@@ -21,8 +21,7 @@ namespace PhoneticDictionaryMauiApp.Source
 
         public List<DictionaryItem> GetItems(string wordToFind)
         {
-            List<DictionaryItem> items = _connection.Table<DictionaryItem>().ToList();
-            return items.Where(i => i.WordId == wordToFind).ToList();
+            return _connection.Table<DictionaryItem>().Where(i => i.WordId == wordToFind).ToList();
         }
     }
 }

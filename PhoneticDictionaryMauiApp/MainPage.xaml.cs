@@ -1,5 +1,6 @@
 ﻿using PhoneticDictionaryMauiApp.Source;
 using PhoneticDictionaryMauiApp.Views;
+using System.Runtime.CompilerServices;
 using static PhoneticDictionaryMauiApp.Source.DictionaryItem;
 
 namespace PhoneticDictionaryMauiApp
@@ -8,7 +9,6 @@ namespace PhoneticDictionaryMauiApp
     {
         private readonly PhoneticDictionaryDatabase _database;
 
-        private readonly AdditionalInfoView _relatedItemsView;
         private readonly AdditionalInfoView _examplesView;
 
         public MainPage(PhoneticDictionaryDatabase database)
@@ -16,7 +16,6 @@ namespace PhoneticDictionaryMauiApp
             InitializeComponent();
 
             _database = database;
-            _relatedItemsView = new AdditionalInfoView("Related Items");
             _examplesView = new AdditionalInfoView("Examples");
         }
 
@@ -39,45 +38,31 @@ namespace PhoneticDictionaryMauiApp
 
         private void HandleItemNotFound(string text)
         {
-            Word.Text = text;
+            NoResultsFoundDisplay.IsVisible = true;
+            MainWordDisplay.IsVisible = false;
+            WordDisplay.Text = text;
             Pronunciation.Text = "Item not found.";
             PhoneticSpelling.Text = string.Empty;
+            ClearExampleItemsDataOnView();
         }
 
         private void SetDataOnView(List<DictionaryItem> items)
         {
             DictionaryItem mainItem = items.Find(i => i.Type == ItemType.Main);
-            List<DictionaryItem> relatedItems = items.FindAll(i => i.Type == ItemType.RelatedItem);
             List<DictionaryItem> examples = items.FindAll(i => i.Type == ItemType.Example);
 
-            Word.Text = mainItem.WordDisplay;
+            NoResultsFoundDisplay.IsVisible = false;
+            MainWordDisplay.IsVisible = true;
+            WordDisplay.Text = mainItem.WordDisplay;
             Pronunciation.Text = mainItem.Pronunciation;
             PhoneticSpelling.Text = mainItem.PhoneticSpelling;
 
-            ClearRelatedItemsDataOnView();
             ClearExampleItemsDataOnView();
-
-            if (relatedItems.Count > 0)
-            {
-                SetRelatedItemsDataOnView(relatedItems);
-            }
 
             if (examples.Count > 0)
             {
                 SetExampleItemsDataOnView(examples);
             }
-        }
-
-        private void SetRelatedItemsDataOnView(List<DictionaryItem> items)
-        {
-            _relatedItemsView.SetDataOnView(items);
-            RelatedItemsParent.Children.Add(_relatedItemsView);
-        }
-
-        private void ClearRelatedItemsDataOnView()
-        {
-            _relatedItemsView.ClearDataOnView();
-            RelatedItemsParent.Children.Clear();
         }
 
         private void SetExampleItemsDataOnView(List<DictionaryItem> items)
@@ -90,6 +75,12 @@ namespace PhoneticDictionaryMauiApp
         {
             _examplesView.ClearDataOnView();
             ExamplesParent.Children.Clear();
+        }
+
+        private void SwitchToggled(object sender, ToggledEventArgs e)
+        {
+            PhoneticSpelling.IsVisible = e.Value;
+            Pronunciation.IsVisible = !e.Value;
         }
     }
 

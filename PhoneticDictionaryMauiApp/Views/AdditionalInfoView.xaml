@@ -2,20 +2,18 @@
 <StackLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PhoneticDictionaryMauiApp.Views.AdditionalInfoView">
-    <Label x:Name="InfoHeader" Text="" HorizontalTextAlignment="Start" FontSize="20" FontAttributes="Bold" Padding="16" />
+    <Label x:Name="InfoHeader" Text="" HorizontalTextAlignment="Center" FontSize="24" FontAttributes="Bold" Padding="0,16,0,16" />
     <StackLayout x:Name="InfoList">
         <BindableLayout.ItemTemplate>
             <DataTemplate>
-                <VerticalStackLayout>
-                    <Label Text="{Binding Word}" Padding="8,0,0,0" FontAttributes="Bold" />
-                    <HorizontalStackLayout>
-                        <Label Text="Pronunciation: " Padding="16,0,0,0" />
-                        <Label Text="{Binding Pronunciation}" LineBreakMode="WordWrap" />
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout>
-                        <Label Text="Phonetic Spelling: " Padding="16,0,0,0" />
-                        <Label Text="{Binding PhoneticSpelling}" LineBreakMode="WordWrap" />
-                    </HorizontalStackLayout>
+                <VerticalStackLayout Padding="10,0,0,16">
+                    <Label Text="{Binding WordDisplay}" Padding="0,0,0,10" FontSize="18" FontAttributes="Bold" />
+                    <Grid ColumnDefinitions="125,*" RowDefinitions="*,*" >
+                        <Label Grid.Column="0" Grid.Row="0" Text="Pronunciation: " FontSize="16" Padding="0,0,0,5" />
+                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding Pronunciation}" FontSize="16" Padding="0,0,0,5" HorizontalOptions="Start" />
+                        <Label Grid.Column="0" Grid.Row="1" Text="Phonetics:" FontSize="16" Padding="0,0,0,5" />
+                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding PhoneticSpelling}" FontSize="16" Padding="0,0,0,5" HorizontalOptions="Start" />
+                    </Grid>
                 </VerticalStackLayout>
             </DataTemplate>
         </BindableLayout.ItemTemplate>

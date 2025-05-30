@@ -6,30 +6,24 @@ namespace PhoneticDictionaryMauiApp.Source
     public class DictionaryItem
     {
         [Column("word_id")]
-        public string WordId { get; private set; }
+        public string WordId { get; set; }
 
         [Column("word_display")]
-        public string WordDisplay { get; private set; }
+        public string WordDisplay { get; set; }
 
         [Column("pronunciation")]
-        public string Pronunciation { get; private set; }
+        public string Pronunciation { get; set; }
 
         [Column("phonetic_spelling")]
-        public string PhoneticSpelling { get; private set; }
+        public string PhoneticSpelling { get; set; }
 
-        [Column("item_type")]
-        public ItemType Type { get; private set; }
+        [Column("type")]
+        public ItemType Type { get; set; }
 
         public enum ItemType
         {
             Main,
-            RelatedItem,
             Example
-        }
-
-        public DictionaryItem()
-        {
-            
         }
     }
 }
